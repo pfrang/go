@@ -28,6 +28,7 @@
         function sendMessage() {
             let message = document.getElementById("messageInput").value;
             socket.send(message);
+            document.getElementById("messageInput").value = ''; // Clear the input field after sending
         }
 
         socket.onclose = function () {
