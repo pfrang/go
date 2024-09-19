@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+</head>
+
+<body>
+    <h1>WebSocket Client</h1>
+
+    <form id="messageForm" onsubmit="sendMessage(event)">
+        <input id="messageInput" type="text" placeholder="Type a message" />
+        <button type="submit">Send</button>
+    </form>
+    <div style="padding-left: 20px; padding-right: 20px;">
+
+    <pre id="messages" style="white-space: pre-wrap;"></pre>
+    </div>
+    <script src="dist/index.js"></script>
+</body>
+
+</html>
