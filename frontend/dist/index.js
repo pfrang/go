@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const apiUrl = "http://localhost:8080/api/messages";
+const apiUrl = "http://localhost:3000/api/messages";
 // Function to fetch messages from the server
 function fetchMessages() {
     return __awaiter(this, void 0, void 0, function* () {
