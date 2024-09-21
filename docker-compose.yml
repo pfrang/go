@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # image: my-go-app:latest  # Specify the image name and tag
+    image: peff6/my-go-app
     ports:
       - "3000:3000"
     environment:
