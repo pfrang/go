@@ -39,17 +39,25 @@ func main() {
 	// Set up the router
 	r := mux.NewRouter()
 
-	// Serve static files
-	// Handle API requests with CORS middleware
+	// Serve the index.html file at the root
+	// r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	// 	http.ServeFile(w, r, "../frontend/index.html")
+	// })
+
 	r.HandleFunc("/api/messages", func(w http.ResponseWriter, r *http.Request) {
 		handleMessages(w, r, db)
 	}).Methods("GET", "POST", "OPTIONS")
 
+	// Serve static files from the frontend directory
+	frontendDir := http.Dir("../frontend")
+	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(frontendDir)))
+	// Handle API requests with CORS middleware
+
 	// Apply CORS middleware
 	r.Use(corsMiddleware)
 
-	log.Println("Server is ready to accept connections on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Println("Server is ready to accept connections on http://localhost:3000")
+	log.Fatal(http.ListenAndServe(":3000", r))
 }
 
 // CORS middleware
