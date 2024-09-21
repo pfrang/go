@@ -34,8 +34,6 @@ WORKDIR /app
 
 # Copy the built Go application from the previous stage
 COPY --from=backend-builder /app/backend/server ./backend/server
-COPY --from=backend-builder /app/backend/.env ./backend
-COPY --from=backend-builder /app/backend/test.db ./backend/test.db
 COPY --from=frontend-builder /app/frontend ./frontend
 
 # Expose the port the app runs on

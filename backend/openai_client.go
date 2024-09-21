@@ -33,7 +33,7 @@ type OpenAIResponse struct {
 func loadEnv() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		log.Println("No .env file located, attempting to read from OS")
 	}
 }
 
