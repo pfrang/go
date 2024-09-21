@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:3000/api/messages";
+const apiUrl = "/api/messages";
 
 // Function to fetch messages from the server
 async function fetchMessages() {
