@@ -6,3 +6,5 @@ node_modules/
 
 # Ignore everything within the /dist folder
 dist/
+
+bin/
