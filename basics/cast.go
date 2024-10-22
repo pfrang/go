@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func main() {
+func castFunc() {
 	accountAgeFloat := 2.6
 	accountAgeInt := int64(accountAgeFloat)
 

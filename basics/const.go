@@ -14,7 +14,7 @@ var currentTime = time.Now()
 
 const someMath = 25 * 35
 
-func constExample() {
+func constFunc() {
 
 	const someConst = 2
 	// someConst = 3 // This will throw an error
