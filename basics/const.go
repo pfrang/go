@@ -1,22 +1,22 @@
 package main
 
-import "time"
+import "fmt"
 
-// Constants can be primitive types like strings, integers, booleans and floats. They can not be more complex types like slices, maps and structs.
-const someConst = 2
+const (
+	// Create a huge number by shifting a 1 bit left 100 places.
+	// In other words, the binary number that is 1 followed by 100 zeroes.
+	Big = 1 << 100
+	// Shift it right again 99 places, so we end up with 1<<1, or 2.
+	Small = Big >> 99
+)
 
-// That said, you cannot declare a constant that can only be computed at run-time like you can in JavaScript. This breaks:
-// the current time can only be known when the program is running
-// const currentTime = time.Now()
-var currentTime = time.Now()
-
-// BUt consts that can be computed at build is ok
-
-const someMath = 25 * 35
+func needInt(x int) int { return x*10 + 1 }
+func needFloat(x float64) float64 {
+	return x * 0.1
+}
 
 func constFunc() {
-
-	const someConst = 2
-	// someConst = 3 // This will throw an error
-	println(someConst)
+	fmt.Println(needInt(Small))
+	fmt.Println(needFloat(Small))
+	fmt.Println(needFloat(Big))
 }

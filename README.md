@@ -15,4 +15,4 @@ go build -o import import.go export.go
 
 
 
-Go through guide https://go.dev/tour/basics/13
+files in /tour stemming from https://go.dev/tour
