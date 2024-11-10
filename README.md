@@ -16,3 +16,7 @@ go build -o import import.go export.go
 
 
 files in /tour stemming from https://go.dev/tour
+
+
+
+in ./quiz stemming from https://tutorialedge.net/challenges/go/
