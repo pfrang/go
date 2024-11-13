@@ -6,5 +6,26 @@
 
 package main
 
+import "fmt"
 
+func fibonacci() func() []int {
+	fibonacciSequence := []int{}
+	return func() []int {
+		for i := 0; i < 10; i++ {
+			if i == 0 || i == 1 {
 
+				fibonacciSequence = append(fibonacciSequence, i)
+				continue
+			}
+			add := fibonacciSequence[i-2] + fibonacciSequence[i-1]
+			fibonacciSequence = append(fibonacciSequence, add)
+
+		}
+
+		return fibonacciSequence
+	}
+}
+func main() {
+	sequence := fibonacci()
+	fmt.Println(sequence())
+}
