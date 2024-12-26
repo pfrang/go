@@ -34,6 +34,11 @@ func handleResponse(w http.ResponseWriter, r *http.Request, response interface{}
 	}
 }
 
+type User struct {
+	Name string
+	Age  int
+}
+
 func StartServer() {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -41,6 +46,17 @@ func StartServer() {
 		handleResponse(w, r, "Hello, World!")
 		// handleResponse(w, r, 123)
 		// handleResponse(w, r, map[string]string{"message": "Hello, World!"})
+	})
+
+	http.HandleFunc("/json", func(w http.ResponseWriter, r *http.Request) {
+
+		name := r.Header.Get("User-Agent")
+		age := 25
+
+		user := User{Name: name, Age: age}
+
+		// Example usage of handleResponse with different types
+		handleResponse(w, r, user)
 	})
 
 	fmt.Println("Server is running on port 8080...")
