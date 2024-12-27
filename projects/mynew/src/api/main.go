@@ -1,10 +1,24 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
+	"log"
+	"mynew/src/api/handlers"
 	"net/http"
 )
+
+// Define a struct with some fields
+type Endpoint struct {
+	Path        string `json:"path"`
+	Description string `json:"description"`
+}
+
+// Define a slice of endpoints
+var endpoints = []Endpoint{
+	{Path: "/", Description: "Root endpoint"},
+	{Path: "/create-user", Description: "Create a new user"},
+	{Path: "/list-endpoints", Description: "List all available endpoints"},
+}
 
 func middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -17,48 +31,21 @@ func middleware(next http.Handler) http.Handler {
 	})
 }
 
-func handleResponse(w http.ResponseWriter, r *http.Request, response interface{}) {
-	switch v := response.(type) {
-	case string:
-		w.Write([]byte(v))
-	case int, float64:
-		w.Write([]byte(fmt.Sprintf("%v", v)))
-	default:
-		jsonResponse, err := json.Marshal(v)
-		if err != nil {
-			http.Error(w, "Error processing response", http.StatusInternalServerError)
-			return
-		}
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(jsonResponse)
-	}
-}
-
-type User struct {
-	Name string
-	Age  int
-}
-
 func StartServer() {
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// Example usage of handleResponse with different types
-		handleResponse(w, r, "Hello, World!")
-		// handleResponse(w, r, 123)
-		// handleResponse(w, r, map[string]string{"message": "Hello, World!"})
-	})
+	root, createUser := handlers.Root, handlers.HandlerCreateUser
 
-	http.HandleFunc("/json", func(w http.ResponseWriter, r *http.Request) {
-
-		name := r.Header.Get("User-Agent")
-		age := 25
-
-		user := User{Name: name, Age: age}
-
-		// Example usage of handleResponse with different types
-		handleResponse(w, r, user)
-	})
+	for _, endpoint := range endpoints {
+		switch endpoint.Path {
+		case "/":
+			http.HandleFunc(endpoint.Path, root)
+		case "/create-user":
+			http.HandleFunc(endpoint.Path, createUser)
+		}
+	}
 
 	fmt.Println("Server is running on port 8080...")
-	http.ListenAndServe(":8080", middleware(http.DefaultServeMux))
+	if err := http.ListenAndServe(":8080", middleware(http.DefaultServeMux)); err != nil {
+		log.Fatalf("Server failed to start: %v", err)
+	}
 }
