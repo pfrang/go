@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"mynew/src/api/utils"
 	"net/http"
-	"src/api/utils"
 )
 
 func Root(w http.ResponseWriter, r *http.Request) {
