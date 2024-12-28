@@ -3,8 +3,8 @@ package api
 import (
 	"fmt"
 	"log"
-	"mynew/src/api/handlers"
 	"net/http"
+	"src/api/handlers"
 )
 
 // Define a struct with some fields

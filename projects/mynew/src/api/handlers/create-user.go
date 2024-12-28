@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
-	"mynew/src/api/utils"
 	"net/http"
+	"src/api/utils"
 )
 
 type User struct {
