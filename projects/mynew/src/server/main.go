@@ -11,15 +11,8 @@ type server struct {
 	addr string
 }
 
-func middleware(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Middleware executed")
-
-	clientInfo := r.Header.Get("User-Agent")
-	fmt.Println(clientInfo)
-}
-
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	middleware(w, r)
+	api.Middleware(w, r)
 
 	http.DefaultServeMux.ServeHTTP(w, r)
 }
