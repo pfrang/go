@@ -7,23 +7,31 @@ import (
 	"net/http"
 )
 
-func middleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("Middleware executed")
+type server struct {
+	addr string
+}
 
-		clientInfo := r.Header.Get("User-Agent")
-		fmt.Println(clientInfo)
+func middleware(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Middleware executed")
 
-		next.ServeHTTP(w, r)
-	})
+	clientInfo := r.Header.Get("User-Agent")
+	fmt.Println(clientInfo)
+}
+
+func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	middleware(w, r)
+
+	http.DefaultServeMux.ServeHTTP(w, r)
 }
 
 func StartServer() {
 
+	s := &server{addr: ":8080"}
 	api.RegisterEndpoints()
 
-	fmt.Println("Server is running on port 8080...")
-	if err := http.ListenAndServe(":8080", middleware(http.DefaultServeMux)); err != nil {
+	fmt.Println("Server running on port 8080...")
+
+	if err := http.ListenAndServe(s.addr, s); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }
