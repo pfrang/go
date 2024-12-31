@@ -1,4 +1,4 @@
-package utils
+package api
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func HandleResponse(w http.ResponseWriter, r *http.Request, response interface{}) {
+func handleResponse(w http.ResponseWriter, r *http.Request, response interface{}) {
 	switch v := response.(type) {
 	case string:
 		w.Write([]byte(v))

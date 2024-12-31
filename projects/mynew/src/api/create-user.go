@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"mynew/src/api/utils"
 	"net/http"
 )
 
@@ -24,6 +23,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.HandleResponse(w, r, user)
+	handleResponse(w, r, user)
 
 }

@@ -1,9 +1,9 @@
 package main
 
-import "mynew/src/server"
+import "mynew/src/api"
 
 // Import the api package
 
 func main() {
-	server.StartServer()
+	api.StartServer()
 }
