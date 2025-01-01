@@ -8,10 +8,6 @@ import (
 
 type Handler func(http.ResponseWriter, *http.Request)
 
-func (e *Handler) LogLoL() {
-	fmt.Println("LOL")
-}
-
 // Define a struct with some fields
 type Endpoint struct {
 	Path        string `json:"path"`
