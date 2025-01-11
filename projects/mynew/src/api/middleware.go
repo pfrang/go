@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func middleware(w http.ResponseWriter, r *http.Request) bool {
+func middleware(w http.ResponseWriter, r *http.Request, endpoints []Endpoint) bool {
 	fmt.Println("Middleware executed")
 
 	clientInfo := r.Header.Get("User-Agent")

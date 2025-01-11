@@ -30,21 +30,16 @@ type Endpoint struct {
 	Handler     http.Handler
 }
 
-// Define a slice of endpoints
-
-func registerEndpoints() {
+func someFunc() {
 	var userSaver UserSaver = func(user string) error {
 		fmt.Println("User saved")
 		return nil
 	}
 
 	userSaver.SaveUser("user")
+}
 
-	endpoints := []Endpoint{
-		{Path: "/", Description: "Root endpoint", Handler: http.HandlerFunc(Root)},
-		{Path: "/create-user", Description: "Create a new user", Handler: CreateUserEndpoint()},
-		{Path: "/list-endpoints", Description: "List all available endpoints", Handler: http.HandlerFunc(listEndpoints)},
-	}
+func registerEndpoints(endpoints []Endpoint) {
 
 	for _, endpoint := range endpoints {
 		http.Handle(endpoint.Path, endpoint.Handler)
@@ -56,13 +51,14 @@ type test struct {
 }
 
 type server struct {
-	Name int
+	Name      int
+	endpoints []Endpoint
 	test
 	http.Server
 }
 
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if found := middleware(w, r); !found {
+	if found := middleware(w, r, s.endpoints); !found {
 		return
 	}
 
@@ -70,8 +66,16 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func StartServer() {
+	endpoints := []Endpoint{
+		{Path: "/", Description: "Root endpoint", Handler: http.HandlerFunc(Root)},
+		{Path: "/create-user", Description: "Create a new user", Handler: CreateUserEndpoint()},
+		{Path: "/get-weather", Description: "Get the weather", Handler: GetWeatherEndpoint()},
+	}
 
-	s := &server{Addr: ":8080"}
+	endpoints = append(endpoints, Endpoint{Path: "/list-endpoints", Description: "List all available endpoints", Handler: listEndpoints(endpoints)})
+
+	registerEndpoints(endpoints)
+	s := &server{Server: http.Server{Addr: ":8080"}, endpoints: endpoints}
 
 	fmt.Println("Server running on port 8080...")
 

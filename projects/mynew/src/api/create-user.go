@@ -16,12 +16,18 @@ type DatabaseAdapter interface {
 
 func CreateUserEndpoint() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		if r.Method != http.MethodPost {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		createUser(w, r)
 		// whatever here
-		dbAdapter.SaveUser(User{})
 	})
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
+func createUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -33,7 +39,5 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid JSON structure", http.StatusBadRequest)
 		return
 	}
-
 	handleResponse(w, r, user)
-
 }
