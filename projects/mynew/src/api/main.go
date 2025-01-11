@@ -6,30 +6,59 @@ import (
 	"net/http"
 )
 
-type Handler func(http.ResponseWriter, *http.Request)
+type UserHandler interface {
+	CreateUser(w http.ResponseWriter, r *http.Request)
+}
+
+type UserSaver func(string) error
+
+func (u UserSaver) SaveUser(user string) error {
+	fmt.Printf("Saving user: %s\n", user)
+	return u(user)
+}
+
+type UserData string
+
+func (u UserData) CreateUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Creating user")
+}
 
 // Define a struct with some fields
 type Endpoint struct {
 	Path        string `json:"path"`
 	Description string `json:"description"`
-	Handler     Handler
+	Handler     http.Handler
 }
 
 // Define a slice of endpoints
-var endpoints = []Endpoint{
-	{Path: "/", Description: "Root endpoint", Handler: Root},
-	{Path: "/create-user", Description: "Create a new user", Handler: CreateUser},
-	// {Path: "/list-endpoints", Description: "List all available endpoints", Handler: listEndpoints},
-}
 
 func registerEndpoints() {
+	var userSaver UserSaver = func(user string) error {
+		fmt.Println("User saved")
+		return nil
+	}
+
+	userSaver.SaveUser("user")
+
+	endpoints := []Endpoint{
+		{Path: "/", Description: "Root endpoint", Handler: http.HandlerFunc(Root)},
+		{Path: "/create-user", Description: "Create a new user", Handler: CreateUserEndpoint()},
+		{Path: "/list-endpoints", Description: "List all available endpoints", Handler: http.HandlerFunc(listEndpoints)},
+	}
+
 	for _, endpoint := range endpoints {
-		http.HandleFunc(endpoint.Path, endpoint.Handler)
+		http.Handle(endpoint.Path, endpoint.Handler)
 	}
 }
 
+type test struct {
+	Name string
+}
+
 type server struct {
-	addr string
+	Name int
+	test
+	http.Server
 }
 
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -42,12 +71,11 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func StartServer() {
 
-	s := &server{addr: ":8080"}
-	registerEndpoints()
+	s := &server{Addr: ":8080"}
 
 	fmt.Println("Server running on port 8080...")
 
-	if err := http.ListenAndServe(s.addr, s); err != nil {
+	if err := http.ListenAndServe(s.Addr, s); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }

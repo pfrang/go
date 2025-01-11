@@ -10,6 +10,17 @@ type User struct {
 	Age  int
 }
 
+type DatabaseAdapter interface {
+	SaveUser(user User) error
+}
+
+func CreateUserEndpoint() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// whatever here
+		dbAdapter.SaveUser(User{})
+	})
+}
+
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
