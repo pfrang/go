@@ -67,7 +67,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func StartServer() {
 	endpoints := []Endpoint{
-		{Path: "/", Description: "Root endpoint", Handler: http.HandlerFunc(Root)},
+		{Path: "/", Description: "Root endpoint", Handler: Root()},
 		{Path: "/create-user", Description: "Create a new user", Handler: CreateUserEndpoint()},
 		{Path: "/get-weather", Description: "Get the weather", Handler: GetWeatherEndpoint()},
 	}
